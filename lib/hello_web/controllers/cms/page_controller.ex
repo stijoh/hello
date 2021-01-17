@@ -30,9 +30,13 @@ defmodule HelloWeb.CMS.PageController do
   end
 
   def show(conn, %{"id" => id}) do
-    page = CMS.get_page!(id)
-    render(conn, "show.html", page: page)
-  end
+  page =
+    id
+    |> CMS.get_page!()
+    |> CMS.inc_page_views()
+
+  render(conn, "show.html", page: page)
+end
 
   def edit(conn, _) do
     changeset = CMS.change_page(conn.assigns.page)
